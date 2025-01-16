@@ -1,4 +1,3 @@
-from vec3 import Vec3
 from color import Color
 
 def to_ppm(filename: str, buffer: list[list[float]]):
