@@ -17,13 +17,13 @@ class Vec3:
         return self.x()**2 + self.y()**2 + self.z()**2
 
     @staticmethod
-    def unit_vector(u):
+    def unit_vector(u: 'Vec3'):
         return u / u.length()
     @staticmethod
-    def dot(u, v):
+    def dot(u: 'Vec3', v: 'Vec3'):
         return (u[0] * v[0]) + (u[1] * v[1]) + (u[2] * v[2])
     @staticmethod
-    def cross(u, v):
+    def cross(u: 'Vec3', v: 'Vec3'):
         return Vec3(u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
 
     # Vector addition and substraction
@@ -40,6 +40,12 @@ class Vec3:
             return Vec3(self[0] * other[0], self[1] * other[1], self[2] * other[2])
         else:
             raise TypeError(f"Unsupported operands type(s) for *: 'Vec3' and {type(other).__name__}")
+    # Allow for float * Vec3
+    def __rmul__(self, other):
+        if isinstance(other, (int, float)):
+            return self.__mul__(other)
+        else:
+            raise TypeError(f"Unsupported operands type(s) for *: {type(other).__name__} and 'Vec3'")
     # Only scalar division
     def __truediv__(self, t: float):
         return Vec3(self.x() / t, self.y() / t, self.z() / t)
