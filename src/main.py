@@ -9,7 +9,6 @@ def to_ppm(filename: str, image: list[list[Color]]):
         file.write(f"{width} {height}\n255\n")
 
         for row in range(height):
-            print(f"scanlines remaining: {height - row}")
             for col in range(width):
                 color = image[row][col]
                 file.write(f"{color.to_rgb()}\n")

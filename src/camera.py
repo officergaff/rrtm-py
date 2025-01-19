@@ -2,11 +2,32 @@ from vec3 import Point, Vec3
 from ray import Ray
 from color import Color
 
+def is_decreasing(a):
+    for i in range(1, len(a)):
+        if a[i] > a[i-1]:
+            return False
+    return True
+
+def hit_sphere(center: Point, radius: float, r: Ray) -> bool:
+    oc = center - r.origin()
+    a = Vec3.dot(r.direction(), r.direction())
+    b = -2.0 * Vec3.dot(r.direction(), oc)
+    c = Vec3.dot(oc, oc) - radius ** 2
+    discriminant = b ** 2 - 4*a*c
+    return discriminant >= 0
+
 def ray_color(r: Ray) -> Color:
+    if hit_sphere(Point(0,0,-1), 0.5, r): return Color(1,0,0)
     unit_direction = Vec3.unit_vector(r.direction())
-    print(unit_direction.y())
     alpha = 0.5 * (unit_direction.y() + 1.0)
-    return (1-alpha) * Color(1, 1, 1) + alpha * Color(0.5, 0.7, 1)
+    return (1-alpha) * Color(1,1,1) + alpha * Color(0.5, 0.7, 1)
+
+def get_alpha(row, col, camera):
+    pixel_center = camera.pixel00_loc + (col * camera.pixel_delta_u) + (row * camera.pixel_delta_v)
+    ray_direction = pixel_center - camera.camera_center
+    r = Ray(camera.camera_center, ray_direction)
+    unit_direction = Vec3.unit_vector(r.direction())
+    return (unit_direction.y() + 1) * 0.5
 
 class Camera:
     def __init__(self, image_width: int, aspect_ratio: float, viewport_height: float, focal_length: float, camera_center: Point):
@@ -38,14 +59,20 @@ class Camera:
 
     def render(self) -> list[list[Color]]:
         image = []
+        col_alpha = []
         for row in range(self.image_height):
             pixel_row = []
+            col_alpha.append(get_alpha(row, 0, self))
+            row_alpha = []
             for col in range(self.image_width):
+                row_alpha.append(get_alpha(row, col, self))
                 pixel_center = self.pixel00_loc + (col * self.pixel_delta_u) + (row * self.pixel_delta_v)
                 ray_direction = pixel_center - self.camera_center
                 r = Ray(self.camera_center, ray_direction)
 
                 pixel_color = ray_color(r)
                 pixel_row.append(pixel_color)
+            print(is_decreasing(row_alpha))
             image.append(pixel_row)
+        print("col_alpha is decreasing: ", is_decreasing(col_alpha))
         return image
