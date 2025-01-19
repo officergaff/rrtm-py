@@ -1,5 +1,6 @@
 from vec3 import Point, Vec3
 
+
 class Ray:
     def __init__(self, origin: Point = Point(), direction: Vec3 = Vec3()):
         self.orig = origin
@@ -7,8 +8,10 @@ class Ray:
 
     def origin(self):
         return self.orig
+
     def direction(self):
         return self.dir
+
     def at(self, t) -> Point:
         return self.orig + self.dir * t
 

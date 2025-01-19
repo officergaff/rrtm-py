@@ -1,5 +1,6 @@
 from vec3 import Vec3
 
+
 class Color(Vec3):
     def to_rgb(self):
         ir = int(255.999 * self.x())
@@ -16,12 +17,15 @@ class Color(Vec3):
     def __add__(self, other):
         result = super().__mul__(other)
         return Color.from_vec3(result)
+
     def __sub__(self, other):
         result = super().__mul__(other)
         return Color.from_vec3(result)
+
     def __mul__(self, other):
         result = super().__mul__(other)
         return Color.from_vec3(result)
+
     def __rmul__(self, other):
         result = super().__mul__(other)
         return Color.from_vec3(result)
