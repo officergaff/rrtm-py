@@ -75,6 +75,9 @@ class Vec3:
         return self
     def __itruediv__(self, t):
         return self.__imul__(1.0/t)
+
+    def __eq__(self, other):
+        return self.x() == other.x() and self.y() == other.y() and self.z() == other.z()
     
     def __repr__(self):
         return f"Vec3({self.x()}, {self.y()}, {self.z()})"

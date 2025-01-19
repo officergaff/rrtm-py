@@ -17,10 +17,10 @@ def hit_sphere(center: Point, radius: float, r: Ray) -> bool:
     return discriminant >= 0
 
 def ray_color(r: Ray) -> Color:
-    if hit_sphere(Point(0,0,-1), 0.5, r): return Color(1,0,0)
+    if hit_sphere(Point(0,0,-1), 0.5, r): return Color(0,1,0)
     unit_direction = Vec3.unit_vector(r.direction())
     alpha = 0.5 * (unit_direction.y() + 1.0)
-    return (1-alpha) * Color(1,1,1) + alpha * Color(0.5, 0.7, 1)
+    return (1-alpha) * Color(1,1,1) + alpha * Color(0, 0, 1)
 
 def get_alpha(row, col, camera):
     pixel_center = camera.pixel00_loc + (col * camera.pixel_delta_u) + (row * camera.pixel_delta_v)
@@ -72,7 +72,8 @@ class Camera:
 
                 pixel_color = ray_color(r)
                 pixel_row.append(pixel_color)
-            print(is_decreasing(row_alpha))
+            if row == 0:
+                print(is_decreasing(row_alpha))
             image.append(pixel_row)
         print("col_alpha is decreasing: ", is_decreasing(col_alpha))
         return image
